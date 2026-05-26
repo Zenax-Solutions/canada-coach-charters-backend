@@ -71,14 +71,6 @@
                 <td>Drop-off</td>
                 <td>{{ $quote->dropoff_location }}</td>
             </tr>@endif
-            @if($quote->distance_km)<tr>
-                <td>Distance</td>
-                <td>{{ number_format($quote->distance_km, 1) }} km</td>
-            </tr>@endif
-            @if($quote->duration_minutes)<tr>
-                <td>Estimated Duration</td>
-                <td>{{ $quote->duration_minutes }} min</td>
-            </tr>@endif
             @if($quote->trip_date)<tr>
                 <td>Date</td>
                 <td>{{ $quote->trip_date->format('M d, Y') }}</td>
