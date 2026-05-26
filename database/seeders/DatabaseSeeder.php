@@ -15,12 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->firstOrCreate([
-            'email' => 'test@example.com',
-        ], [
-            'name' => 'Test User',
-        ]);
-
         $this->call([
             //AdminUserSeeder::class,
             ClassicHighlightsTourSeeder::class,
