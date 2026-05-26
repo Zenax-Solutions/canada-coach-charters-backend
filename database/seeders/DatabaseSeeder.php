@@ -22,7 +22,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            TourSeeder::class,
+            //AdminUserSeeder::class,
+            ClassicHighlightsTourSeeder::class,
+            WildlifeHeritageTourSeeder::class,
+            CulturalAyurvedaJourneySeeder::class,
+            GrandIslandJourneySeeder::class,
+            AccessibleLuxuryTourSeeder::class,
+            GrandAdventureEscapeSeeder::class,
+            GrandRoundJourneySeeder::class,
+            CulinaryTourSeeder::class,
+            TravelProposalSeeder::class,
         ]);
     }
 }
