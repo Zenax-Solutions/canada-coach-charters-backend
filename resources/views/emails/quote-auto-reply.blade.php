@@ -127,10 +127,6 @@
                 <td>Drop-off Date and Time</td>
                 <td>{{ $dropoffDateAndTime }}</td>
             </tr>@endif
-            @if(!is_null($quote->distance_km))<tr>
-                <td>Distance</td>
-                <td>{{ number_format($quote->distance_km, 1) }} km</td>
-            </tr>@endif
             @if($quote->service_type === 'transfer' && $tripTypeLabel)<tr>
                 <td>Trip Type</td>
                 <td>{{ $tripTypeLabel }}</td>
