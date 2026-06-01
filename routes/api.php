@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\ChatLeadController;
 use App\Http\Controllers\Api\GalleryController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\TourController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,9 @@ Route::prefix('v1')->group(function () {
 
     // Quote / Contact form submission
     Route::post('/quote', [QuoteController::class, 'store']);
+
+    // Location search for quote forms (Google Places)
+    Route::get('/location/search', [LocationController::class, 'search']);
 
     // AI Chat lead capture (separate from quotes)
     Route::post('/chat-lead', [ChatLeadController::class, 'store']);

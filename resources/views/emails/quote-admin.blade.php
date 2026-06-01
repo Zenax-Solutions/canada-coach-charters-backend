@@ -52,10 +52,58 @@
             margin-top: 16px;
             border-radius: 4px;
         }
+
+        .logo-wrap {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .logo {
+            max-width: 220px;
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 
 <body>
+    @php
+    $serviceTypeLabel = ucfirst($quote->service_type ?? '');
+    $pickupDate = $quote->trip_date ? $quote->trip_date->format('M d, Y') : null;
+    $pickupDateAndTime = $pickupDate || $quote->pickup_time
+    ? trim(($pickupDate ?? '') . ($quote->pickup_time ? ' ' . $quote->pickup_time : ''))
+    : '—';
+    $dropoffDate = $quote->departure_date ? $quote->departure_date->format('M d, Y') : null;
+    $dropoffDateAndTime = $dropoffDate || $quote->departure_time
+    ? trim(($dropoffDate ?? '') . ($quote->departure_time ? ' ' . $quote->departure_time : ''))
+    : '—';
+    $tripTypeLabel = match ($quote->transfer_trip_type) {
+    'round-trip' => 'Round Trip',
+    'one-way' => 'One Way',
+    default => '—',
+    };
+    $vehicleAtDestination = is_null($quote->use_vehicle_at_destination)
+    ? '—'
+    : ($quote->use_vehicle_at_destination ? 'Yes' : 'No');
+    $note = null;
+    if (!empty($quote->message)) {
+    foreach (preg_split('/\r\n|\r|\n/', $quote->message) as $line) {
+    $trimmedLine = trim($line);
+    if (str_starts_with($trimmedLine, 'Note:')) {
+    $note = trim(substr($trimmedLine, 5));
+    break;
+    }
+    }
+    if (!$note) {
+    $note = $quote->message;
+    }
+    }
+    @endphp
+
+    <div class="logo-wrap">
+        <img class="logo" src="{{ url('/logo.png') }}" alt="Canada Coach Charters">
+    </div>
+
     <h2>New Quote Request Received</h2>
     <p>A new <span class="badge">{{ $quote->service_type }}</span> quote request has been submitted.</p>
 
@@ -74,7 +122,11 @@
         </tr>
         <tr>
             <td>Service Type</td>
-            <td>{{ ucfirst($quote->service_type) }}</td>
+            <td>{{ $serviceTypeLabel }}</td>
+        </tr>
+        <tr>
+            <td>No. of Passengers</td>
+            <td>{{ $quote->passengers ?? '—' }}</td>
         </tr>
         <tr>
             <td>Pickup</td>
@@ -85,20 +137,32 @@
             <td>{{ $quote->dropoff_location ?? '—' }}</td>
         </tr>
         <tr>
+            <td>Pickup Date and Time</td>
+            <td>{{ $pickupDateAndTime }}</td>
+        </tr>
+        @if($quote->service_type === 'transfer')
+        <tr>
+            <td>Drop-off Date and Time</td>
+            <td>{{ $dropoffDateAndTime }}</td>
+        </tr>
+        @endif
+        <tr>
             <td>Distance</td>
             <td>{{ $quote->distance_km ? number_format($quote->distance_km, 1) . ' km' : '—' }}</td>
         </tr>
+        @if($quote->service_type === 'transfer')
         <tr>
-            <td>Estimated Duration</td>
-            <td>{{ $quote->duration_minutes ? $quote->duration_minutes . ' min' : '—' }}</td>
+            <td>Trip Type</td>
+            <td>{{ $tripTypeLabel }}</td>
         </tr>
         <tr>
-            <td>Trip Date</td>
-            <td>{{ $quote->trip_date ? $quote->trip_date->format('M d, Y') : '—' }}</td>
+            <td>Do you plan to use the vehicle at the destination?</td>
+            <td>{{ $vehicleAtDestination }}</td>
         </tr>
+        @endif
         <tr>
-            <td>Passengers</td>
-            <td>{{ $quote->passengers ?? '—' }}</td>
+            <td>Note</td>
+            <td>{{ $note ?: '—' }}</td>
         </tr>
         <tr>
             <td>Budget</td>
@@ -112,7 +176,7 @@
 
     @if($quote->message)
     <div class="message-box">
-        <strong>Message:</strong><br>{{ $quote->message }}
+        <strong>Full Message Payload:</strong><br>{{ $quote->message }}
     </div>
     @endif
 

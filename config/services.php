@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'google_maps' => [
+        'key' => env('GOOGLE_MAPS_API_KEY', env('GOOGLE_API_KEY')),
+        'region' => env('GOOGLE_MAPS_REGION', ''),
+        'language' => env('GOOGLE_MAPS_LANGUAGE', 'en'),
+        'country' => env('GOOGLE_MAPS_COUNTRY', ''),
+    ],
+
 ];
