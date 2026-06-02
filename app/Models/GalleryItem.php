@@ -11,6 +11,7 @@ class GalleryItem extends Model
         'title',
         'description',
         'image_path',
+        'video_path',
         'sort_order',
     ];
 

@@ -35,9 +35,26 @@ class GalleryItemResource extends Resource
                         Forms\Components\TextInput::make('sort_order')->numeric()->default(0),
                         Forms\Components\Textarea::make('description')->rows(2)->columnSpanFull(),
                         Forms\Components\FileUpload::make('image_path')
-                            ->required()
+                            ->label('Image')
                             ->image()
                             ->directory('gallery')
+                            ->nullable()
+                            ->requiredWithout('video_path')
+                            ->helperText('Upload an image, or leave empty and upload a video below.')
+                            ->columnSpanFull(),
+                        Forms\Components\FileUpload::make('video_path')
+                            ->label('Video')
+                            ->directory('gallery/videos')
+                            ->acceptedFileTypes([
+                                'video/mp4',
+                                'video/quicktime',
+                                'video/webm',
+                                'video/x-msvideo',
+                            ])
+                            ->maxSize(102400)
+                            ->nullable()
+                            ->requiredWithout('image_path')
+                            ->helperText('Optional video upload (max 100MB). If provided, image can be empty.')
                             ->columnSpanFull(),
                     ])->columns(2),
             ]);
@@ -48,6 +65,15 @@ class GalleryItemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path'),
+                Tables\Columns\TextColumn::make('video_path')
+                    ->label('Media Type')
+                    ->formatStateUsing(fn (?string $state, GalleryItem $record) => $record->image_path ? 'Image' : ($state ? 'Video' : 'N/A'))
+                    ->badge()
+                    ->color(fn (string $state) => match ($state) {
+                        'Image' => 'success',
+                        'Video' => 'warning',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('album.name')->label('Album')->badge()->color('info'),
                 Tables\Columns\TextColumn::make('sort_order')->sortable(),
