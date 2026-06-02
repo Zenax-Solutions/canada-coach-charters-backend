@@ -67,9 +67,9 @@ class GalleryItemResource extends Resource
                 Tables\Columns\ImageColumn::make('image_path'),
                 Tables\Columns\TextColumn::make('video_path')
                     ->label('Media Type')
-                    ->formatStateUsing(fn (?string $state, GalleryItem $record) => $record->image_path ? 'Image' : ($state ? 'Video' : 'N/A'))
+                    ->formatStateUsing(fn(?string $state, GalleryItem $record) => $record->image_path ? 'Image' : ($state ? 'Video' : 'N/A'))
                     ->badge()
-                    ->color(fn (string $state) => match ($state) {
+                    ->color(fn(string $state) => match ($state) {
                         'Image' => 'success',
                         'Video' => 'warning',
                         default => 'gray',
