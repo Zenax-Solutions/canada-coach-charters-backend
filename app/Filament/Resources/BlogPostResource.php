@@ -44,12 +44,26 @@ class BlogPostResource extends Resource
                 Forms\Components\RichEditor::make('content')->required()->columnSpanFull(),
             ]),
 
-            Forms\Components\Section::make('Media & SEO')->schema([
+            Forms\Components\Section::make('Media')->schema([
                 Forms\Components\FileUpload::make('featured_image')
                     ->image()->directory('blog')->columnSpanFull(),
-                Forms\Components\TextInput::make('meta_title'),
-                Forms\Components\Textarea::make('meta_description')->rows(2),
-            ])->columns(2)->collapsed(),
+                Forms\Components\TextInput::make('image_title')
+                    ->label('Image Title'),
+                Forms\Components\TextInput::make('alt_text')
+                    ->label('Alt Text'),
+            ])->columns(2),
+
+            Forms\Components\Section::make('SEO')->schema([
+                Forms\Components\TextInput::make('meta_title')
+                    ->label('Meta Title (title tag)'),
+                Forms\Components\Textarea::make('meta_description')
+                    ->label('Meta Description')
+                    ->rows(2),
+                Forms\Components\Textarea::make('schema')
+                    ->label('Schema (JSON-LD)')
+                    ->rows(5)
+                    ->helperText('Optional structured data in JSON-LD format.'),
+            ])->columns(1)->collapsed(),
         ]);
     }
 

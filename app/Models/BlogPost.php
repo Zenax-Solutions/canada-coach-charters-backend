@@ -13,9 +13,12 @@ class BlogPost extends Model
         'excerpt',
         'content',
         'featured_image',
+        'alt_text',
+        'image_title',
         'author',
         'meta_title',
         'meta_description',
+        'schema',
         'status',
         'published_at',
     ];
