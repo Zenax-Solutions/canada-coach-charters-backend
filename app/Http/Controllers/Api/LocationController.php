@@ -177,6 +177,77 @@ class LocationController extends Controller
         }
     }
 
+    public function route(Request $request)
+    {
+        $fromLat = (float) $request->input('from.lat');
+        $fromLon = (float) $request->input('from.lon');
+        $toLat = (float) $request->input('to.lat');
+        $toLon = (float) $request->input('to.lon');
+
+        if (!$fromLat || !$fromLon || !$toLat || !$toLon) {
+            return response()->json(['error' => 'Missing coordinates'], 400);
+        }
+
+        $apiKey = (string) config('services.google_maps.key', '');
+        if ($apiKey === '') {
+            return response()->json(['error' => 'Missing API key'], 500);
+        }
+
+        try {
+            $response = Http::timeout(8)
+                ->withHeaders([
+                    'X-Goog-Api-Key' => $apiKey,
+                    'X-Goog-FieldMask' => 'routes.distanceMeters,routes.duration',
+                ])
+                ->post('https://routes.googleapis.com/directions/v2:computeRoutes', [
+                    'origin' => [
+                        'location' => [
+                            'latLng' => [
+                                'latitude' => $fromLat,
+                                'longitude' => $fromLon,
+                            ],
+                        ],
+                    ],
+                    'destination' => [
+                        'location' => [
+                            'latLng' => [
+                                'latitude' => $toLat,
+                                'longitude' => $toLon,
+                            ],
+                        ],
+                    ],
+                    'travelMode' => 'DRIVE',
+                ]);
+
+            if (!$response->ok()) {
+                Log::warning('Google Routes API HTTP error', [
+                    'status_code' => $response->status(),
+                ]);
+                return response()->json(['distance_km' => 0, 'duration_minutes' => 0]);
+            }
+
+            $data = $response->json();
+            $route = $data['routes'][0] ?? null;
+
+            if (!$route) {
+                Log::warning('Google Routes API returned no routes');
+                return response()->json(['distance_km' => 0, 'duration_minutes' => 0]);
+            }
+
+            $distanceMeters = (float) ($route['distanceMeters'] ?? 0);
+            $durationRaw = (string) ($route['duration'] ?? '0s');
+            $durationSeconds = (int) rtrim($durationRaw, 's');
+
+            return response()->json([
+                'distance_km' => round($distanceMeters / 1000, 1),
+                'duration_minutes' => round($durationSeconds / 60),
+            ]);
+        } catch (\Throwable $exception) {
+            report($exception);
+            return response()->json(['distance_km' => 0, 'duration_minutes' => 0]);
+        }
+    }
+
     private function extractPostalCode(mixed $components): string
     {
         if (!is_array($components)) {

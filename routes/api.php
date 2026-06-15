@@ -46,6 +46,9 @@ Route::prefix('v1')->group(function () {
     // Location search for quote forms (Google Places)
     Route::get('/location/search', [LocationController::class, 'search']);
 
+    // Distance calculation from 455 Ferrier St to destination (Google Distance Matrix)
+    Route::post('/location/route', [LocationController::class, 'route']);
+
     // Page SEO settings
     Route::get('/page-seo', [PageSeoController::class, 'index']);
     Route::get('/page-seo/{page}', [PageSeoController::class, 'show']);
