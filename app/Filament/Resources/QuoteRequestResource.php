@@ -212,10 +212,10 @@ class QuoteRequestResource extends Resource
                     )
                     ->sortable()
                     ->color(fn($state) => $state && $state > 1800 ? 'warning' : null), // Flag >30hrs in yellow
+                Tables\Columns\TextColumn::make('trip_date')->date()->sortable(),
                 Tables\Columns\TextColumn::make('pickup_time')
                     ->label('Pickup Time')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('trip_date')->date()->sortable(),
                 Tables\Columns\TextColumn::make('departure_date')
                     ->label('Departure Date')
                     ->date()
