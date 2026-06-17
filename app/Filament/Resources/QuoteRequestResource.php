@@ -60,12 +60,9 @@ class QuoteRequestResource extends Resource
                 Forms\Components\Toggle::make('use_vehicle_at_destination')
                     ->label('Use vehicle at destination')
                     ->visible(fn($get) => $get('service_type') === 'transfer'),
-                Forms\Components\TextInput::make('pickup_time')
-                    ->visible(fn($get) => $get('service_type') === 'transfer'),
-                Forms\Components\DatePicker::make('departure_date')
-                    ->visible(fn($get) => $get('service_type') === 'transfer'),
-                Forms\Components\TextInput::make('departure_time')
-                    ->visible(fn($get) => $get('service_type') === 'transfer'),
+                Forms\Components\TextInput::make('pickup_time'),
+                Forms\Components\DatePicker::make('departure_date'),
+                Forms\Components\TextInput::make('departure_time'),
                 Forms\Components\TextInput::make('transfer_option')
                     ->label('Transfer Service')
                     ->visible(fn($get) => $get('service_type') === 'transfer'),
