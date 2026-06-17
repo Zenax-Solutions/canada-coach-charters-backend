@@ -52,7 +52,6 @@ class QuoteRequestResource extends Resource
                     ->dehydrated(false),
                 Forms\Components\TextInput::make('pickup_location'),
                 Forms\Components\TextInput::make('dropoff_location'),
-                Forms\Components\DatePicker::make('trip_date'),
                 Forms\Components\TextInput::make('passengers')->numeric(),
                 Forms\Components\Select::make('transfer_trip_type')
                     ->options(['round-trip' => 'Round Trip', 'one-way' => 'One Way'])
@@ -60,6 +59,7 @@ class QuoteRequestResource extends Resource
                 Forms\Components\Toggle::make('use_vehicle_at_destination')
                     ->label('Use vehicle at destination')
                     ->visible(fn($get) => $get('service_type') === 'transfer'),
+                Forms\Components\DatePicker::make('trip_date'),
                 Forms\Components\TextInput::make('pickup_time'),
                 Forms\Components\DatePicker::make('departure_date'),
                 Forms\Components\TextInput::make('departure_time'),
