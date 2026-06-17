@@ -119,13 +119,21 @@
                 <td>Drop-off</td>
                 <td>{{ $quote->dropoff_location }}</td>
             </tr>@endif
-            @if($pickupDateAndTime)<tr>
-                <td>Pickup Date and Time</td>
-                <td>{{ $pickupDateAndTime }}</td>
+            @if($pickupDate)<tr>
+                <td>Pickup Date</td>
+                <td>{{ $pickupDate }}</td>
             </tr>@endif
-            @if($quote->service_type === 'transfer' && $dropoffDateAndTime)<tr>
-                <td>Drop-off Date and Time</td>
-                <td>{{ $dropoffDateAndTime }}</td>
+            @if($quote->pickup_time)<tr>
+                <td>Pickup Time</td>
+                <td>{{ $quote->pickup_time }}</td>
+            </tr>@endif
+            @if($quote->service_type === 'transfer' && $dropoffDate)<tr>
+                <td>Departure Date</td>
+                <td>{{ $dropoffDate }}</td>
+            </tr>@endif
+            @if($quote->service_type === 'transfer' && $quote->departure_time)<tr>
+                <td>Departure Time</td>
+                <td>{{ $quote->departure_time }}</td>
             </tr>@endif
             @if($quote->service_type === 'transfer' && $tripTypeLabel)<tr>
                 <td>Trip Type</td>
@@ -142,7 +150,29 @@
         </table>
     </div>
 
-    <p style="margin-top:20px;">If you need to reach us sooner, you can reply to this email or call us directly.</p>
+    <p style="margin-top:20px;">If you need to reach us sooner, you can reply to this email or contact us directly:</p>
+
+    <div class="box" style="background:#eff6ff;border-color:#bfdbfe;">
+        <strong>Contact Us</strong>
+        <table>
+            <tr>
+                <td>Phone</td>
+                <td><a href="tel:+13436559818" style="color:#1d4ed8;">+1 (343) 655-9818</a></td>
+            </tr>
+            <tr>
+                <td>WhatsApp</td>
+                <td><a href="https://wa.me/13436559818" style="color:#1d4ed8;">+1 (343) 655-9818</a></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><a href="mailto:info@canadacoachcharters.ca" style="color:#1d4ed8;">info@canadacoachcharters.ca</a></td>
+            </tr>
+            <tr>
+                <td>Website</td>
+                <td><a href="https://canadacoachcharters.ca" style="color:#1d4ed8;">canadacoachcharters.ca</a></td>
+            </tr>
+        </table>
+    </div>
 
     <div class="footer">
         Canada Coach Charters &mdash; Toronto, Ontario<br>

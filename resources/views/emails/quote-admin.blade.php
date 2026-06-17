@@ -129,21 +129,29 @@
             <td>{{ $quote->passengers ?? '—' }}</td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>Pickup Location</td>
             <td>{{ $quote->pickup_location ?? '—' }}</td>
         </tr>
         <tr>
-            <td>Drop-off</td>
+            <td>Drop-off Location</td>
             <td>{{ $quote->dropoff_location ?? '—' }}</td>
         </tr>
         <tr>
-            <td>Pickup Date and Time</td>
-            <td>{{ $pickupDateAndTime }}</td>
+            <td>Pickup Date</td>
+            <td>{{ $pickupDate ?? '—' }}</td>
+        </tr>
+        <tr>
+            <td>Pickup Time</td>
+            <td>{{ $quote->pickup_time ?? '—' }}</td>
         </tr>
         @if($quote->service_type === 'transfer')
         <tr>
-            <td>Drop-off Date and Time</td>
-            <td>{{ $dropoffDateAndTime }}</td>
+            <td>Departure Date</td>
+            <td>{{ $dropoffDate ?? '—' }}</td>
+        </tr>
+        <tr>
+            <td>Departure Time</td>
+            <td>{{ $quote->departure_time ?? '—' }}</td>
         </tr>
         @endif
         <tr>
